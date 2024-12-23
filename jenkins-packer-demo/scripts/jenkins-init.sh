@@ -36,6 +36,7 @@ sudo apt-get update
 sudo apt-get -y install fontconfig openjdk-17-jre
 # install jenkins
 sudo apt-get -y install jenkins
+packer plugins install github.com/hashicorp/amazon
 
 # install terraform
 wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
