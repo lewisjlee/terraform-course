@@ -1,8 +1,8 @@
 resource "aws_s3_bucket" "b" {
-  bucket = "mybucket-c29df1"
+  bucket = "mybucket-lewisjlee-jilee1102"
 
   tags = {
-    Name = "mybucket-c29df1"
+    Name = "mybucket-lewisjlee-jilee1102"
   }
 }
 

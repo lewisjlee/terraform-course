@@ -68,6 +68,7 @@ resource "aws_elastic_beanstalk_environment" "app-prod" {
     name      = "CrossZone"
     value     = "true"
   }
+  # 애플리케이션 업데이트 시 30%씩 업데이트
   setting {
     namespace = "aws:elasticbeanstalk:command"
     name      = "BatchSize"

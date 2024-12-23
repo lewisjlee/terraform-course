@@ -7,8 +7,8 @@
     "type": "amazon-ebs",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
-    "region": "eu-west-1",
-    "source_ami": "ami-844e0bf7",
+    "region": "ap-northeast-2",
+    "source_ami": "ami-049788618f07e189d",
     "instance_type": "t2.micro",
     "ssh_username": "ubuntu",
     "ami_name": "packer-example {{timestamp}}"

@@ -1,4 +1,5 @@
 module "vpc-prod" {
+  # 테라폼 자체에서 제공하는 aws vpc 모듈을 다운받아 이를 기반으로 새로운 모듈 생성
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.59.0"
 

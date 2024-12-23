@@ -1,5 +1,5 @@
 variable "AWS_REGION" {
-  default = "eu-west-1"
+  default = "ap-northeast-2"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
@@ -12,14 +12,6 @@ variable "PATH_TO_PUBLIC_KEY" {
 
 variable "INSTANCE_DEVICE_NAME" {
   default = "/dev/xvdh"
-}
-
-variable "JENKINS_VERSION" {
-  default = "2.414.3"
-}
-
-variable "TERRAFORM_VERSION" {
-  default = "0.12.23"
 }
 
 variable "APP_INSTANCE_COUNT" {

@@ -25,25 +25,26 @@ echo '/dev/data/volume1 /var/lib/jenkins ext4 defaults 0 0' >> /etc/fstab
 mount /var/lib/jenkins
 
 # jenkins repository
-wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
-echo "deb http://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
-apt-get update
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
 
 # install dependencies
-apt-get install -y python3 openjdk-11-jdk awscli
+sudo apt-get -y install fontconfig openjdk-17-jre
 # install jenkins
-apt-get install -y jenkins=${JENKINS_VERSION} unzip
+sudo apt-get -y install jenkins
 
 # install terraform
-wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-&& unzip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin \
-&& rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install -y terraform
 
 # install packer
-cd /usr/local/bin
-wget -q https://releases.hashicorp.com/packer/0.10.2/packer_0.10.2_linux_amd64.zip
-unzip packer_0.10.2_linux_amd64.zip
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get -y install packer
 # clean up
-apt-get clean
-rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-rm packer_0.10.2_linux_amd64.zip
+sudo apt-get clean
