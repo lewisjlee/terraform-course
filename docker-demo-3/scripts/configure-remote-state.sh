@@ -10,3 +10,4 @@ echo 'terraform {
   }
 }
 ' >> backend.tf
+terraform init
