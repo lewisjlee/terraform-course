@@ -6,7 +6,7 @@ echo 'terraform {
   backend "s3" {
     bucket = "terraform-state-lewisjlee"
     key    = "terraform.tfstate"
-    region = "eu-west-1"
+    region = "ap-northeast-2"
   }
 }
 ' >> backend.tf
