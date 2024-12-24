@@ -37,9 +37,9 @@ resource "aws_launch_template" "ecs-example-launchconfig" {
 
 resource "aws_autoscaling_group" "ecs-example-autoscaling" {
   name                 = "ecs-example-autoscaling"
-  vpc_zone_identifier  = [aws_subnet.main-public-1.id, aws_subnet.main-public-2.id]
+  vpc_zone_identifier  = [aws_subnet.main-public-1.id, aws_subnet.main-public-3.id]
   min_size             = 1
-  max_size             = 1
+  max_size             = 2
 
   launch_template {
     id      = aws_launch_template.ecs-example-launchconfig.id

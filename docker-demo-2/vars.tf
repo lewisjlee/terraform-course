@@ -1,5 +1,5 @@
 variable "AWS_REGION" {
-  default = "eu-west-1"
+  default = "ap-northeast-2"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
@@ -19,8 +19,9 @@ variable "ECS_AMIS" {
   default = {
     us-east-1 = "ami-1924770e"
     us-west-2 = "ami-56ed4936"
-    eu-west-1 = "ami-c8337dbb"
+    ap-northeast-2 = "ami-005662b2a76593e2f"
   }
 }
 
 # Full List: http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+# Name :  amazon/amzn2-ami-ecs-kernel-5.10-inf-hvm-2.0.20241010-x86_64-ebs
