@@ -9,5 +9,5 @@ echo 'terraform {
     region = "ap-northeast-2"
   }
 }
-' >> backend.tf
+' > backend.tf
 terraform init
