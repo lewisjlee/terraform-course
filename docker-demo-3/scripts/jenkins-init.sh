@@ -24,18 +24,34 @@ mkdir -p /var/lib/jenkins
 echo '/dev/data/volume1 /var/lib/jenkins ext4 defaults 0 0' >> /etc/fstab
 mount /var/lib/jenkins
 
-# install default-jre (needed for ubuntu 18.04)
-apt-get update
-apt-get install -y default-jre
+# jenkins repository
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
 
-# install jenkins and docker
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
-   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
- https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
- /etc/apt/sources.list.d/jenkins.list > /dev/null
-apt-get update
-apt-get install -y jenkins=${JENKINS_VERSION} unzip docker.io
+# install dependencies
+sudo apt-get -y install fontconfig openjdk-17-jre
+# install jenkins
+sudo apt-get -y install jenkins
+packer plugins install github.com/hashicorp/amazon
+
+# https://docs.docker.com/engine/install/ubuntu/
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # enable docker and add perms
 usermod -G docker jenkins
@@ -43,20 +59,16 @@ systemctl enable docker
 service docker start
 service jenkins restart
 
-# install pip
-wget -q https://bootstrap.pypa.io/get-pip.py
-python get-pip.py
-python3 get-pip.py
-rm -f get-pip.py
-# install awscli
-pip install awscli
+#awscli 설치
+sudo apt-get -y install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 
 # install terraform
-TERRAFORM_VERSION="0.12.18"
-wget -q https://releases.hashicorp.com/terraform/$${TERRAFORM_VERSION}/terraform_$${TERRAFORM_VERSION}_linux_amd64.zip \
-&& unzip -o terraform_$${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin \
-&& rm terraform_$${TERRAFORM_VERSION}_linux_amd64.zip
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install -y terraform
 
 # clean up
 apt-get clean
-rm terraform_0.12.18_linux_amd64.zip
