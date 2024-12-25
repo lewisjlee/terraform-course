@@ -13,6 +13,9 @@ resource "aws_instance" "jenkins-instance" {
 
   # user data
   user_data = data.cloudinit_config.cloudinit-jenkins.rendered
+  
+  # jenkins iam role
+  iam_instance_profile = aws_iam_instance_profile.jenkins-instance-role.name
 }
 
 resource "aws_ebs_volume" "jenkins-data" {

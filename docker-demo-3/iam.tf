@@ -116,3 +116,96 @@ resource "aws_iam_policy_attachment" "ecs-service-attach1" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }
 
+# Jenkins Instance Role Setting
+
+resource "aws_iam_instance_profile" "jenkins-instance-role" {
+  name = "jenkins-instance-role"
+  role = aws_iam_role.jenkins-instance-role.name
+}
+
+resource "aws_iam_role" "jenkins-instance-role" {
+name = "jenkins-instance-role"
+assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+
+}
+
+resource "aws_iam_policy_attachment" "jenkins-instance-role-attach1" {
+  name       = "jenkins-instance-role-attach1"
+  roles      = [aws_iam_role.jenkins-instance-role.name]
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
+resource "aws_iam_role_policy" "jenkins-instance-role-policy" {
+name   = "jenkins-instance-role-policy"
+role   = aws_iam_role.jenkins-instance-role.id
+policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "iam:Get*",
+            "iam:List*",
+            "iam:PassRole"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": "ec2:*",
+          "Resource": "*"
+        },
+        { 
+          "Effect": "Allow",
+          "Action": "ecs:*",
+          "Resource": "*"
+        },
+        { 
+          "Effect": "Allow",
+          "Action": "elasticloadbalancing:*",
+          "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+# terraform-state bucket policy
+
+resource "aws_s3_bucket_policy" "terraform-state-bucket-policy" {
+  bucket = aws_s3_bucket.terraform-state.id
+  policy = data.aws_iam_policy_document.terraform-state-bucket-policy.json
+}
+
+data "aws_iam_policy_document" "terraform-state-bucket-policy" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::637423605616:role/jenkins-instance-role"]
+    }
+
+    actions = [
+      "s3:*"
+    ]
+
+    resources = [
+      aws_s3_bucket.terraform-state.arn,
+      "arn:aws:s3:::terraform-state-lewisjlee/*",
+    ]
+  }
+}

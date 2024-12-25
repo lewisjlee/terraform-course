@@ -51,7 +51,7 @@ resource "aws_elb" "myapp-elb" {
   connection_draining         = true
   connection_draining_timeout = 400
 
-  subnets         = [aws_subnet.main-public-1.id, aws_subnet.main-public-2.id]
+  subnets         = [aws_subnet.main-public-1.id, aws_subnet.main-public-3.id]
   security_groups = [aws_security_group.myapp-elb-securitygroup.id]
 
   tags = {
