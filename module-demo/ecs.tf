@@ -33,6 +33,7 @@ module "my-service" {
   deployment_controller = "ECS"
 }
 
+# 도메인을 보유하고 ACM에서 인증서를 발급해야 작업 실행 가능
 module "my-alb" {
   source             = "github.com/in4it/terraform-modules//modules/alb"
   vpc_id             = module.vpc.vpc_id
