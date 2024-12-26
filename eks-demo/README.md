@@ -5,16 +5,14 @@ See https://www.terraform.io/docs/providers/aws/guides/eks-getting-started.html 
 
 ## Download kubectl
 ```
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.2/2024-11-15/bin/linux/amd64/kubectl
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin
 ```
 
-## Download the aws-iam-authenticator
+## Gaining Kubeconfig
 ```
-wget https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.3.0/heptio-authenticator-aws_0.3.0_linux_amd64
-chmod +x heptio-authenticator-aws_0.3.0_linux_amd64
-sudo mv heptio-authenticator-aws_0.3.0_linux_amd64 /usr/local/bin/heptio-authenticator-aws
+aws eks update-kubeconfig --region region-code --name my-cluster
 ```
 
 ## Modify providers.tf
@@ -27,12 +25,6 @@ Make changes in providers.tf accordingly (region, optionally profile)
 ```
 terraform init
 terraform apply
-```
-
-## Configure kubectl
-```
-terraform output kubeconfig # save output in ~/.kube/config
-aws eks --region <region> update-kubeconfig --name terraform-eks-demo
 ```
 
 ## Configure config-map-auth-aws
