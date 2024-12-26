@@ -54,4 +54,3 @@ resource "aws_iam_role_policy" "demo-cluster-service-linked-role" {
 EOF
 
 }
-
