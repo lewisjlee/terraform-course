@@ -10,6 +10,7 @@ resource "aws_codebuild_project" "demo" {
     type = "CODEPIPELINE"
   }
 
+  # S3 버킷을 cache로 사용할 수도 있다.
   #cache {
   #  type     = "S3"
   #  location = aws_s3_bucket.codebuild-cache.bucket

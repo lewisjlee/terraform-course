@@ -33,7 +33,7 @@ resource "aws_codepipeline" "demo" {
       // CodeStar configuration
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.github.arn
-        FullRepositoryId = "wardviaene/docker-demo-codepipeline"  // change this to your github username/repo
+        FullRepositoryId = "lewisjlee/docker-demo-codepipeline"  // change this to your github username/repo
         BranchName       = "main" // change this to your branch
       }
     }
