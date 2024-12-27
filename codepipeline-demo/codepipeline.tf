@@ -18,9 +18,9 @@ resource "aws_codepipeline" "demo" {
     name = "Source"
 
     action {
-      name             = "Source"
-      category         = "Source"
-      owner            = "AWS"
+      name     = "Source"
+      category = "Source"
+      owner    = "AWS"
       //provider         = "CodeCommit"
       provider         = "CodeStarSourceConnection"
       version          = "1"
@@ -33,8 +33,8 @@ resource "aws_codepipeline" "demo" {
       // CodeStar configuration
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.github.arn
-        FullRepositoryId = "lewisjlee/docker-demo-codepipeline"  // change this to your github username/repo
-        BranchName       = "main" // change this to your branch
+        FullRepositoryId = "lewisjlee/docker-demo-codepipeline" // change this to your github username/repo
+        BranchName       = "main"                               // change this to your branch
       }
     }
   }
