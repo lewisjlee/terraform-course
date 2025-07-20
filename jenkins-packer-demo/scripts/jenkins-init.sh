@@ -36,7 +36,6 @@ sudo apt-get update
 sudo apt-get -y install fontconfig openjdk-17-jre
 # install jenkins
 sudo apt-get -y install jenkins
-packer plugins install github.com/hashicorp/amazon
 
 # install terraform
 curl -sO https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
