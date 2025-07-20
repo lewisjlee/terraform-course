@@ -39,7 +39,7 @@ sudo apt-get -y install jenkins
 packer plugins install github.com/hashicorp/amazon
 
 # install terraform
-curl https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
+curl -sO https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
 unzip terraform_1.12.2_linux_amd64.zip
 mv terraform /usr/local/bin/
 terraform --version
