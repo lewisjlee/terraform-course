@@ -37,12 +37,6 @@ sudo apt-get -y install fontconfig openjdk-17-jre
 # install jenkins
 sudo apt-get -y install jenkins
 
-# install terraform
-curl -sO https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
-unzip terraform_1.12.2_linux_amd64.zip
-mv terraform /usr/local/bin/
-terraform --version
-
 # install packer
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
@@ -53,6 +47,12 @@ sudo apt-get -y install unzip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
+
+# install terraform
+curl -sO https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
+unzip terraform_1.12.2_linux_amd64.zip
+mv terraform /usr/local/bin/
+terraform --version
 
 # clean up
 sudo apt-get clean
